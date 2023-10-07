@@ -1,3 +1,4 @@
+# cmake
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -9,3 +10,12 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
+# vscode
+**/.vscode
+
+# apple stuff
+**/.DS_Store
+
+# imGui
+**/imgui.ini
