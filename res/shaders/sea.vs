@@ -13,8 +13,9 @@ uniform float speeds[10];
 uniform float amplitudes[10];
 uniform float waveLengths[10];
 
-out vec2 TexCoords;
+//out vec2 TexCoords;
 out vec3 FragPos;
+out vec3 Normal;
 
 void main()
 {
@@ -32,7 +33,8 @@ void main()
 
     pos.y = y;
 
-    gl_Position = projection * view * model * vec4(pos, 1.0);
     FragPos = vec3(model * vec4(pos, 1.0));
-    TexCoords = aTexCoords;
+    Normal = mat3(transpose(inverse(model))) * aNormal;  
+    gl_Position = projection * view * vec4(FragPos, 1.0);
+    // TexCoords = aTexCoords;
 }
