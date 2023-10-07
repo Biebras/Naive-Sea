@@ -38,6 +38,21 @@ bool hideCursor = true;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
+//fps
+float currentFPS = 0.0f;
+
+// sea variables
+int numWaves = 3;
+float speed1 = 3.5f;
+float waveLength1 = 3.0f;
+float amplitude1 = 0.39f;
+float speed2 = 4.0f;
+float waveLength2 = 6.6f;
+float amplitude2 = 0.5f;
+float speed3 = 2.0f;
+float waveLength3 = 4.6f;
+float amplitude3 = 0.6f;
+
 int main()
 {
     // glfw: initialize and configure
@@ -90,7 +105,7 @@ int main()
 
     // load models
     // -----------
-    Model plane = *ModelCreator::CreatePlaneModel(20.0f, 20.0f, 20);
+    Model plane = *ModelCreator::CreatePlaneModel(20.0f, 20.0f, 200);
 
     // ImGui initialization
     // --------------------
@@ -109,6 +124,9 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        // fps
+        currentFPS = 1.0f / deltaTime;
 
         // input
         // -----
@@ -133,14 +151,27 @@ int main()
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         seaShader.setMatrix4("model", model);
 
+        // shader sea variables
+        seaShader.setFloat("time", currentFrame);
+        seaShader.setInt("numWaves", numWaves);
+        seaShader.setFloat("speeds[0]", speed1);
+        seaShader.setFloat("waveLengths[0]", waveLength1);
+        seaShader.setFloat("amplitudes[0]", amplitude1);
+        seaShader.setFloat("speeds[1]", speed2);
+        seaShader.setFloat("waveLengths[1]", waveLength2);
+        seaShader.setFloat("amplitudes[1]", amplitude2);
+        seaShader.setFloat("speeds[2]", speed3);
+        seaShader.setFloat("waveLengths[2]", waveLength3);
+        seaShader.setFloat("amplitudes[2]", amplitude3);
+
         plane.Draw(seaShader);
 
         // draw plane with normal visualizing geometry shader
-        normalShader.use();
-        normalShader.setMatrix4("projection", projection);
-        normalShader.setMatrix4("view", view);
-        normalShader.setMatrix4("model", model);
-        plane.Draw(normalShader);
+        // normalShader.use();
+        // normalShader.setMatrix4("projection", projection);
+        // normalShader.setMatrix4("view", view);
+        // normalShader.setMatrix4("model", model);
+        // plane.Draw(normalShader);
 
 
         // start ImGui frame
@@ -150,8 +181,31 @@ int main()
         ImGui::NewFrame();
 
         // add ImGui widgets
-        ImGui::Begin("Settings");
-        ImGui::DragFloat3("Camera Position", &camera.Position[0], 0.1f);
+        ImGui::Begin("Sea Variables");
+
+        ImGui::Text("FPS: %.1f", currentFPS);
+
+        if (ImGui::CollapsingHeader("Wave 1"))
+        {
+            ImGui::SliderFloat("Speed 1", &speed1, 0.0f, 10.0f);
+            ImGui::SliderFloat("Wave Length 1", &waveLength1, 0.01f, 10.0f);
+            ImGui::SliderFloat("Amplitude 1", &amplitude1, 0.0f, 1.0f);
+        }
+
+        if (ImGui::CollapsingHeader("Wave 2"))
+        {
+            ImGui::SliderFloat("Speed 2", &speed2, 0.0f, 10.0f);
+            ImGui::SliderFloat("Wave Length 2", &waveLength2, 0.01f, 10.0f);
+            ImGui::SliderFloat("Amplitude 2", &amplitude2, 0.0f, 1.0f);
+        }
+        
+        if (ImGui::CollapsingHeader("Wave 3"))
+        {
+            ImGui::SliderFloat("Speed 3", &speed3, 0.0f, 10.0f);
+            ImGui::SliderFloat("Wave Length 3", &waveLength3, 0.01f, 10.0f);
+            ImGui::SliderFloat("Amplitude 3", &amplitude3, 0.0f, 1.0f);
+        }
+
         ImGui::End();
 
         ImGui::Render();
