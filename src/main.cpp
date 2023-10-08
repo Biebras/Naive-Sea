@@ -24,8 +24,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 760;
 
 // camera
 Camera camera(glm::vec3(9.0f, 9.0f, 38.0f));
@@ -41,17 +41,31 @@ float lastFrame = 0.0f; // Time of last frame
 //fps
 float currentFPS = 0.0f;
 
+// light variables
+glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
+glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
+glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
+glm::vec3 lightSpecular(1.0f, 1.0f, 0.3f);
+
+// material variables
+glm::vec3 materialDiffuse(0.39f, 0.58f, 0.94f);
+glm::vec3 materialSpecular(0.71f, 0.5f, 0.09f);
+float materialShininess = 32.0f;
+
 // sea variables
 float seaSize = 20;
 int seaResolution = 500;
 int numWaves = 3;
 float speed1 = 3.5f;
+glm::vec2 wave1Direction(1.0f, 0.0f);
 float waveLength1 = 3.0f;
 float amplitude1 = 0.39f;
 float speed2 = 4.0f;
+glm::vec2 wave2Direction(0.0f, 1.0f);
 float waveLength2 = 6.6f;
 float amplitude2 = 0.5f;
 float speed3 = 2.0f;
+glm::vec2 wave3Direction(1.0f, 1.0f);
 float waveLength3 = 4.6f;
 float amplitude3 = 0.6f;
 
@@ -153,16 +167,32 @@ int main()
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         seaShader.setMatrix4("model", model);
 
+        seaShader.setVector3("viewPos", camera.Position);
+
+        // light variables
+        seaShader.setVector3("light.direction", lightDir);
+        seaShader.setVector3("light.ambient", lightAmbient);
+        seaShader.setVector3("light.diffuse", lightDiffuse);
+        seaShader.setVector3("light.specular", lightSpecular);
+
+        // material variables
+        seaShader.setVector3("material.diffuse", materialDiffuse);
+        seaShader.setVector3("material.specular", materialSpecular);
+        seaShader.setFloat("material.shininess", materialShininess);
+
         // shader sea variables
         seaShader.setFloat("time", currentFrame);
         seaShader.setInt("numWaves", numWaves);
         seaShader.setFloat("speeds[0]", speed1);
+        seaShader.setVector2("directions[0]", wave1Direction);
         seaShader.setFloat("waveLengths[0]", waveLength1);
         seaShader.setFloat("amplitudes[0]", amplitude1);
         seaShader.setFloat("speeds[1]", speed2);
+        seaShader.setVector2("directions[1]", wave2Direction);
         seaShader.setFloat("waveLengths[1]", waveLength2);
         seaShader.setFloat("amplitudes[1]", amplitude2);
         seaShader.setFloat("speeds[2]", speed3);
+        seaShader.setVector2("directions[2]", wave3Direction);
         seaShader.setFloat("waveLengths[2]", waveLength3);
         seaShader.setFloat("amplitudes[2]", amplitude3);
 
@@ -180,9 +210,25 @@ int main()
 
         ImGui::Text("FPS: %.1f", currentFPS);
 
+        if (ImGui::CollapsingHeader("Light"))
+        {
+            ImGui::SliderFloat3("Light Direction", &lightDir[0], -1.0f, 1.0f);
+            ImGui::ColorEdit3("Light Ambient", &lightAmbient[0]);
+            ImGui::ColorEdit3("Light Diffuse", &lightDiffuse[0]);
+            ImGui::ColorEdit3("Light Specular", &lightSpecular[0]);
+        }
+
+        if (ImGui::CollapsingHeader("Material"))
+        {
+            ImGui::ColorEdit3("Material Diffuse", &materialDiffuse[0]);
+            ImGui::ColorEdit3("Material Specular", &materialSpecular[0]);
+            ImGui::SliderFloat("Material Shininess", &materialShininess, 0.0f, 256.0f);
+        }
+
         if (ImGui::CollapsingHeader("Wave 1"))
         {
             ImGui::SliderFloat("Speed 1", &speed1, 0.0f, 10.0f);
+            ImGui::SliderFloat2("Direction 1", &wave1Direction[0], -1.0f, 1.0f);
             ImGui::SliderFloat("Wave Length 1", &waveLength1, 0.01f, 10.0f);
             ImGui::SliderFloat("Amplitude 1", &amplitude1, 0.0f, 1.0f);
         }
@@ -190,6 +236,7 @@ int main()
         if (ImGui::CollapsingHeader("Wave 2"))
         {
             ImGui::SliderFloat("Speed 2", &speed2, 0.0f, 10.0f);
+            ImGui::SliderFloat2("Direction 2", &wave2Direction[0], -1.0f, 1.0f);
             ImGui::SliderFloat("Wave Length 2", &waveLength2, 0.01f, 10.0f);
             ImGui::SliderFloat("Amplitude 2", &amplitude2, 0.0f, 1.0f);
         }
@@ -197,6 +244,7 @@ int main()
         if (ImGui::CollapsingHeader("Wave 3"))
         {
             ImGui::SliderFloat("Speed 3", &speed3, 0.0f, 10.0f);
+            ImGui::SliderFloat2("Direction 3", &wave3Direction[0], -1.0f, 1.0f);
             ImGui::SliderFloat("Wave Length 3", &waveLength3, 0.01f, 10.0f);
             ImGui::SliderFloat("Amplitude 3", &amplitude3, 0.0f, 1.0f);
         }
