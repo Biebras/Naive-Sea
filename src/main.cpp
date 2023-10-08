@@ -45,12 +45,12 @@ float currentFPS = 0.0f;
 glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
 glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
-glm::vec3 lightSpecular(1.0f, 1.0f, 0.3f);
+glm::vec3 lightSpecular(0.21f, 0.21f, 0.21f);
 
 // material variables
 glm::vec3 materialDiffuse(0.39f, 0.58f, 0.94f);
-glm::vec3 materialSpecular(0.71f, 0.5f, 0.09f);
-float materialShininess = 32.0f;
+glm::vec3 materialSpecular(0.91f, 0.78f, 0.26f);
+float materialShininess = 64.0f;
 
 // sea variables
 float seaSize = 20;

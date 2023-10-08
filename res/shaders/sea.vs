@@ -41,8 +41,8 @@ void main()
         y += pow(e, amplitudes[i] * sin(x) - 1);
         
         // derivative respect to x and z
-        yx += amplitudes[i] * dir.x * frequency * cos(x)*pow(e, amplitudes[i] * sin(x) - 1);
-        yz += amplitudes[i] * dir.y * frequency * cos(x)*pow(e, amplitudes[i] * sin(x) - 1);
+        yx += amplitudes[i] * dir.x * frequency * cos(x) * pow(e, amplitudes[i] * sin(x) - 1);
+        yz += amplitudes[i] * dir.y * frequency * cos(x) * pow(e, amplitudes[i] * sin(x) - 1);
     }
 
     pos.y = y;
