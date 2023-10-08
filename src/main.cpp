@@ -42,6 +42,8 @@ float lastFrame = 0.0f; // Time of last frame
 float currentFPS = 0.0f;
 
 // sea variables
+float seaSize = 20;
+int seaResolution = 500;
 int numWaves = 3;
 float speed1 = 3.5f;
 float waveLength1 = 3.0f;
@@ -101,11 +103,10 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader seaShader("../res/shaders/sea.vs", "../res/shaders/sea.fs");
-    Shader normalShader("../res/shaders/normals/normal_visualization.vs", "../res/shaders/normals/normal_visualization.fs", "../res/shaders/normals/normal_visualization.gs");
 
     // load models
     // -----------
-    Model plane = *ModelCreator::CreatePlaneModel(20.0f, 20.0f, 200);
+    Model plane = *ModelCreator::CreatePlaneModel(seaSize, seaSize, seaResolution);
 
     // ImGui initialization
     // --------------------
@@ -143,6 +144,7 @@ int main()
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         seaShader.setMatrix4("projection", projection);
+        seaShader.setMatrix4("projection2", projection);
         seaShader.setMatrix4("view", view);
 
         // render the loaded model
@@ -165,13 +167,6 @@ int main()
         seaShader.setFloat("amplitudes[2]", amplitude3);
 
         plane.Draw(seaShader);
-
-        // draw plane with normal visualizing geometry shader
-        // normalShader.use();
-        // normalShader.setMatrix4("projection", projection);
-        // normalShader.setMatrix4("view", view);
-        // normalShader.setMatrix4("model", model);
-        // plane.Draw(normalShader);
 
 
         // start ImGui frame
