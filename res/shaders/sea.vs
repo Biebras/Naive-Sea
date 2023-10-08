@@ -20,6 +20,7 @@ out vec3 Normal;
 
 void main()
 {
+    float e = 2.71828;
     vec3 pos = aPos;
 
     //calculate y and derivatives for normals
@@ -33,10 +34,15 @@ void main()
         float phase = speeds[i] / waveLengths[i];
         vec2 dir = directions[i];
 
-        y += amplitudes[i] * sin(dot(dir, aPos.xz) * frequency + time * phase);
+        // calculate input for wave equation
+        float x = dot(dir, aPos.xz) * frequency + time * phase;
 
-        yx += amplitudes[i] * dir.x * frequency * cos(dot(dir, aPos.xz) * frequency + time * phase);
-        yz += amplitudes[i] * dir.y * frequency * cos(dot(dir, aPos.xz) * frequency + time * phase);
+        // wave equation
+        y += pow(e, amplitudes[i] * sin(x) - 1);
+        
+        // derivative respect to x and z
+        yx += amplitudes[i] * dir.x * frequency * cos(x)*pow(e, amplitudes[i] * sin(x) - 1);
+        yz += amplitudes[i] * dir.y * frequency * cos(x)*pow(e, amplitudes[i] * sin(x) - 1);
     }
 
     pos.y = y;
