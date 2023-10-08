@@ -54,10 +54,3 @@ void main()
     FragPos = vec3(model * vec4(pos, 1.0)); 
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }
-
-
-        // y += amplitudes[i] * sin(frequency * pos.x + time * phase);
-        // y += amplitudes[i] * sin(frequency * pos.z + time * phase);
-
-        // yx += amplitudes[i] * phase * cos(frequency * pos.x + time * phase);
-        // yz += amplitudes[i] * phase * cos(frequency * pos.z + time * phase);
