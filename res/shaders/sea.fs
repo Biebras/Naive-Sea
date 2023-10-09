@@ -17,7 +17,8 @@ struct Material
 in vec3 Normal;
 in vec3 FragPos;
 
-uniform vec3 viewPos;
+uniform vec3 cameraPos;
+uniform samplerCube skybox;
 uniform Light light;
 uniform Material material;
 
@@ -35,11 +36,17 @@ void main()
     vec3 diffuse = diff * light.diffuse * material.diffuse;
     
     // specular
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 viewDir = normalize(cameraPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, normal);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = spec * material.specular;  
         
-    vec3 result = ambient + diffuse + specular;
+    float ratio = 1.00 / 2;
+    vec3 I = normalize(FragPos - cameraPos);
+    vec3 R = refract(I, normalize(Normal), ratio);
+    vec3 refraction = texture(skybox, R).rgb;
+
+    vec3 result = ambient + diffuse + specular + refraction;
+
     FragColor = vec4(result, 1.0);
 }
