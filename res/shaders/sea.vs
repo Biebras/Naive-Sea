@@ -49,7 +49,7 @@ void main()
     {
         vec2 dir = GetRandomDirection(i);
 
-        // domain warping
+        // domain warping. Makes crests more pointy
         pos.x += lastDx * 0.02;
         pos.z += lastDz * 0.02;
 
@@ -75,7 +75,6 @@ void main()
 
     //calculate normal
     Normal = normalize(vec3(-dx, 1.0, -dz));
-    //Normal = normalize(aNormal);
 
     FragPos = vec3(model * vec4(pos, 1.0)); 
     gl_Position = projection * view * vec4(FragPos, 1.0);
