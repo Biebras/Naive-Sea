@@ -36,9 +36,16 @@ void main()
     float dx = 0.0;
     float dz = 0.0;
 
+    float lastDx = 0.0;
+    float lastDz = 0.0;
+
     for(int i = 0; i < numWaves; i++)
     {
         vec2 dir = GetRandomDirection(i);
+
+        // domain warping
+        pos.x += lastDx * 0.02;
+        pos.z += lastDz * 0.02;
 
         // calculate input for wave equation
         float x = dot(dir, pos.xz) * frequency + time * speed;
@@ -50,6 +57,8 @@ void main()
         dx += amplitude * frequency * pow(e, sin(x)) * dir.x * cos(x);
         dz += amplitude * frequency * pow(e, sin(x)) * dir.y * cos(x);
 
+        lastDx = dx;
+        lastDz = dz;
         amplitude *= 0.80;
         frequency *= 1.1;
         speed *= 1.01;

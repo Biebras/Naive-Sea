@@ -42,7 +42,7 @@ float lastFrame = 0.0f; // Time of last frame
 float currentFPS = 0.0f;
 
 // light variables
-glm::vec3 lightDir(-0.729f, -0.594f, -0.792f);
+glm::vec3 lightDir(0.628f, -0.594f, 0.628f);
 glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
 glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
 
@@ -143,7 +143,7 @@ int main()
         seaShader.use();
 
         // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
         glm::mat4 view = camera.GetViewMatrix();
         seaShader.setMatrix4("projection", projection);
         seaShader.setMatrix4("projection2", projection);
