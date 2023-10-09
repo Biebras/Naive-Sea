@@ -14,6 +14,12 @@ uniform mat4 projection;
 uniform float time;
 uniform int numWaves;
 uniform float directionSeed;
+uniform float initialAmplitude;
+uniform float initialFrequency;
+uniform float initialSpeed;
+uniform float amplitudeIncrease;
+uniform float frequencyIncrease;
+uniform float speedIncrease;
 
 out vec3 FragPos;
 out vec3 Normal;
@@ -26,9 +32,9 @@ void main()
     float e = 2.71828;
 
     // wave parameters
-    float amplitude = 0.35;
-    float frequency = 0.5;
-    float speed = 1;
+    float amplitude = initialAmplitude;
+    float frequency = initialFrequency;
+    float speed = initialSpeed;
     float amplitudeSum = 0.0;
 
     //calculate y and derivatives for normals
@@ -59,9 +65,9 @@ void main()
 
         lastDx = dx;
         lastDz = dz;
-        amplitude *= 0.80;
-        frequency *= 1.1;
-        speed *= 1.01;
+        amplitude *= amplitudeIncrease;
+        frequency *= frequencyIncrease;
+        speed *= speedIncrease;
     }
 
     // we minus numWaves to make the ocean stay at the same y through the change of numWaves. I don't know why this works...

@@ -43,13 +43,13 @@ float lastFrame = 0.0f; // Time of last frame
 float currentFPS = 0.0f;
 
 // light variables
-glm::vec3 lightDir(0.068f, -0.594f, -0.280f);
+glm::vec3 lightDir(0.005f, -0.021f, -1.0f);
 glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
 glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
 
 // material variables
 glm::vec3 materialDiffuse(0.3f, 0.56f, 0.6f);
-glm::vec3 materialSpecular(0.25f, 0.2f, 0.1f);
+glm::vec3 materialSpecular(0.72f, 0.57f, 0.3f);
 float materialShininess = 128.0f;
 
 // sea variables
@@ -57,6 +57,12 @@ float seaSize = 250;
 int seaResolution = 500;
 int numWaves = 64;
 float waveDirectionSeed = 128;
+float initialAmplitude = 0.63;
+float initialFrequency = 0.11;
+float initialSpeed = 0.96;
+float amplitudeIncrease = 0.74;
+float frequencyIncrease = 1.22;
+float speedIncrease = 0.970;
 
 //skybox
 vector<std::string> skyboxFaces
@@ -253,6 +259,12 @@ int main()
         seaShader.setFloat("time", currentFrame);
         seaShader.setInt("numWaves", numWaves);
         seaShader.setFloat("directionSeed", waveDirectionSeed);
+        seaShader.setFloat("initialAmplitude", initialAmplitude);
+        seaShader.setFloat("initialFrequency", initialFrequency);
+        seaShader.setFloat("initialSpeed", initialSpeed);
+        seaShader.setFloat("amplitudeIncrease", amplitudeIncrease);
+        seaShader.setFloat("frequencyIncrease", frequencyIncrease);
+        seaShader.setFloat("speedIncrease", speedIncrease);
 
         plane.Draw(seaShader);
 
@@ -262,6 +274,8 @@ int main()
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
         skyboxShader.setMatrix4("view", view);
         skyboxShader.setMatrix4("projection", projection);
+        skyboxShader.setVector3("sunDirection", lightDir);
+
         // skybox cube
         glBindVertexArray(skyboxVAO);
         glActiveTexture(GL_TEXTURE0);
@@ -283,7 +297,7 @@ int main()
 
         if (ImGui::CollapsingHeader("Light"))
         {
-            ImGui::SliderFloat3("Light Direction", &lightDir[0], -1.0f, 1.0f);
+            ImGui::SliderFloat3("Light Direction", &lightDir[0], -1.0f, 1.0f, "%.6f");
             ImGui::ColorEdit3("Light Ambient", &lightAmbient[0]);
             ImGui::ColorEdit3("Light Diffuse", &lightDiffuse[0]);
         }
@@ -299,6 +313,12 @@ int main()
         {
             ImGui::SliderInt("Number of Waves", &numWaves, 1, 64);
             ImGui::InputFloat("Wave Direction Seed", &waveDirectionSeed);
+            ImGui::DragFloat("Initial Amplitude", &initialAmplitude, 0.01f);
+            ImGui::DragFloat("Amplitude Increase", &amplitudeIncrease, 0.01f);
+            ImGui::DragFloat("Initial Frequency", &initialFrequency, 0.01f);
+            ImGui::DragFloat("Frequency Increase", &frequencyIncrease, 0.01f);
+            ImGui::DragFloat("Initial Speed", &initialSpeed, 0.01f);
+            ImGui::DragFloat("Speed Increase", &speedIncrease, 0.01f);
         }
 
         ImGui::End();
