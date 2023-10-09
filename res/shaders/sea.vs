@@ -26,15 +26,15 @@ void main()
     float e = 2.71828;
 
     // wave parameters
-    float amplitude = 0.9;
+    float amplitude = 0.35;
     float frequency = 0.5;
-    float speed = 1.25;
+    float speed = 1;
     float amplitudeSum = 0.0;
 
     //calculate y and derivatives for normals
     float y = 0.0;
-    float yx = 0.0;
-    float yz = 0.0;
+    float dx = 0.0;
+    float dz = 0.0;
 
     for(int i = 0; i < numWaves; i++)
     {
@@ -44,22 +44,22 @@ void main()
         float x = dot(dir, pos.xz) * frequency + time * speed;
 
         // wave equation
-        y += pow(e, amplitude * sin(x) - 1);
+        y += pow(e, amplitude * sin(x));
         
         // derivative respect to x and z
-        yx += amplitude * dir.x * frequency * cos(x) * pow(e, amplitude * sin(x) - 1);
-        yz += amplitude * dir.y * frequency * cos(x) * pow(e, amplitude * sin(x) - 1);
+        dx += amplitude * frequency * pow(e, sin(x)) * dir.x * cos(x);
+        dz += amplitude * frequency * pow(e, sin(x)) * dir.y * cos(x);
 
-        amplitude *= 0.82;
+        amplitude *= 0.80;
         frequency *= 1.1;
         speed *= 1.01;
     }
 
-    // we divide by the sum of the amplitudes to normalize the wave. I don't know why this works
-    pos.y = y - 20;
+    // we minus numWaves to make the ocean stay at the same y through the change of numWaves. I don't know why this works...
+    pos.y = y - numWaves;
 
     //calculate normal
-    Normal = normalize(vec3(-yx, 1.0, -yz));
+    Normal = normalize(vec3(-dx, 1.0, -dz));
     //Normal = normalize(aNormal);
 
     FragPos = vec3(model * vec4(pos, 1.0)); 

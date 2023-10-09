@@ -42,14 +42,14 @@ float lastFrame = 0.0f; // Time of last frame
 float currentFPS = 0.0f;
 
 // light variables
-glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
+glm::vec3 lightDir(-0.729f, -0.594f, -0.792f);
 glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
 glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
 
 // material variables
 glm::vec3 materialDiffuse(0.39f, 0.58f, 0.94f);
-glm::vec3 materialSpecular(0.91f, 0.78f, 0.26f);
-float materialShininess = 64.0f;
+glm::vec3 materialSpecular(0.25f, 0.2f, 0.0f);
+float materialShininess = 128.0f;
 
 // sea variables
 float seaSize = 20;
