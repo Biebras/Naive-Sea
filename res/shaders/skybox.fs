@@ -7,12 +7,16 @@ uniform samplerCube skybox;
 uniform vec3 sunDirection;
 uniform vec3 sunColor;
 uniform float sunRadius;
+uniform float time;
 
 float GetSunMask(float sunViewDot, float sunRadius);
 
 void main()
 {    
-    vec3 color = texture(skybox, TexCoords).rgb;
+    vec3 animatedTexCoords = TexCoords;
+    animatedTexCoords.z += time * 0.007;
+
+    vec3 color = texture(skybox, animatedTexCoords).rgb;
 
     // add sun
     float sunViewDot = dot(normalize(-sunDirection), normalize(TexCoords));

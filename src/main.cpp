@@ -279,6 +279,7 @@ int main()
         skyboxShader.setVector3("sunDirection", lightDir);
         skyboxShader.setVector3("sunColor", sunColor);
         skyboxShader.setFloat("sunRadius", sunRadius);
+        skyboxShader.setFloat("time", currentFrame);
 
         // skybox cube
         glBindVertexArray(skyboxVAO);
