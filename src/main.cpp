@@ -46,6 +46,8 @@ float currentFPS = 0.0f;
 glm::vec3 lightDir(0.005f, -0.021f, -1.0f);
 glm::vec3 lightAmbient(0.3f, 0.3f, 0.3f);
 glm::vec3 lightDiffuse(0.7f, 0.7f, 0.7f);
+glm::vec3 sunColor(1.0f, 0.73f, 0.0f);
+float sunRadius = 0.052f;
 
 // material variables
 glm::vec3 materialDiffuse(0.3f, 0.56f, 0.6f);
@@ -275,6 +277,8 @@ int main()
         skyboxShader.setMatrix4("view", view);
         skyboxShader.setMatrix4("projection", projection);
         skyboxShader.setVector3("sunDirection", lightDir);
+        skyboxShader.setVector3("sunColor", sunColor);
+        skyboxShader.setFloat("sunRadius", sunRadius);
 
         // skybox cube
         glBindVertexArray(skyboxVAO);
@@ -300,6 +304,8 @@ int main()
             ImGui::SliderFloat3("Light Direction", &lightDir[0], -1.0f, 1.0f, "%.6f");
             ImGui::ColorEdit3("Light Ambient", &lightAmbient[0]);
             ImGui::ColorEdit3("Light Diffuse", &lightDiffuse[0]);
+            ImGui::ColorEdit3("Sun Color", &sunColor[0]);
+            ImGui::DragFloat("Sun Radius", &sunRadius, 0.001f);
         }
 
         if (ImGui::CollapsingHeader("Material"))

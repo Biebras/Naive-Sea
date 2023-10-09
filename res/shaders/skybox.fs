@@ -5,6 +5,8 @@ in vec3 TexCoords;
 
 uniform samplerCube skybox;
 uniform vec3 sunDirection;
+uniform vec3 sunColor;
+uniform float sunRadius;
 
 float GetSunMask(float sunViewDot, float sunRadius);
 
@@ -14,14 +16,15 @@ void main()
 
     // add sun
     float sunViewDot = dot(normalize(-sunDirection), normalize(TexCoords));
-    float sunMask = GetSunMask(sunViewDot, 0.01);
-    vec3 sun = vec3(1.0, 0.9, 0.6) * sunMask;
+    float sunMask = GetSunMask(sunViewDot, sunRadius);
+    vec3 sun = sunColor * sunMask;
 
     FragColor = vec4(color + sun, 1.0);
 }
 
 float GetSunMask(float sunViewDot, float sunRadius)
 {
-    float stepRadius = 1 - sunRadius * sunRadius;
-    return step(stepRadius, sunViewDot);
+    float edge0 = 1 - (sunRadius * sunRadius);
+    float edge1 = edge0 + 0.01; // decrease this value to slow down the fade out
+    return smoothstep(edge0, edge1, sunViewDot);
 }
