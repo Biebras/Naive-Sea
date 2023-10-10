@@ -13,10 +13,7 @@ float GetSunMask(float sunViewDot, float sunRadius);
 
 void main()
 {    
-    vec3 animatedTexCoords = TexCoords;
-    animatedTexCoords.z += time * 0.007;
-
-    vec3 color = texture(skybox, animatedTexCoords).rgb;
+    vec3 color = texture(skybox, TexCoords).rgb;
 
     // add sun
     float sunViewDot = dot(normalize(-sunDirection), normalize(TexCoords));
