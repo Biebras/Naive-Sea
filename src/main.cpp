@@ -50,9 +50,12 @@ glm::vec3 sunColor(1.0f, 0.73f, 0.0f);
 float sunRadius = 0.052f;
 
 // material variables
-glm::vec3 materialDiffuse(0.3f, 0.56f, 0.6f);
+glm::vec3 materialDiffuse(0.15f, 0.4f, 0.5f);
 glm::vec3 materialSpecular(0.72f, 0.57f, 0.3f);
-float materialShininess = 128.0f;
+float materialShininess = 64.0f;
+float materialRefractiveIndex = 1.33f;
+glm::vec3 materialHighlight(0.05f, 0.13f, 0.12f);
+float materialHighlightOffset = 0.0f;
 
 // sea variables
 float seaSize = 250;
@@ -255,7 +258,10 @@ int main()
         // material variables
         seaShader.setVector3("material.diffuse", materialDiffuse);
         seaShader.setVector3("material.specular", materialSpecular);
+        seaShader.setFloat("material.refractiveIndex", materialRefractiveIndex);
         seaShader.setFloat("material.shininess", materialShininess);
+        seaShader.setVector3("material.highlight", materialHighlight);
+        seaShader.setFloat("material.highlightOffset", materialHighlightOffset);
 
         // shader sea variables
         seaShader.setFloat("time", currentFrame);
@@ -314,6 +320,9 @@ int main()
             ImGui::ColorEdit3("Material Diffuse", &materialDiffuse[0]);
             ImGui::ColorEdit3("Material Specular", &materialSpecular[0]);
             ImGui::SliderFloat("Material Shininess", &materialShininess, 0.0f, 256.0f);
+            ImGui::SliderFloat("Material Refractive Index", &materialRefractiveIndex, 1.0f, 2.0f);
+            ImGui::ColorEdit3("Material Highlight", &materialHighlight[0]);
+            ImGui::DragFloat("Material Highlight Offset", &materialHighlightOffset, 0.001f);
         }
 
         if (ImGui::CollapsingHeader("Sea"))
