@@ -58,7 +58,7 @@ glm::vec3 materialHighlight(0.05f, 0.13f, 0.12f);
 float materialHighlightOffset = 0.0f;
 
 // sea variables
-float seaSize = 250;
+float seaSize = 600;
 int seaResolution = 500;
 int numWaves = 64;
 float waveDirectionSeed = 128;
