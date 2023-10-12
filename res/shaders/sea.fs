@@ -43,7 +43,7 @@ void main()
     //highlight
     float highlightMask = max((FragPos.y - material.highlightOffset), 0.0);
     float distanceToPlayer = length(cameraPos - FragPos);
-    float fadeFactor = max(1.0 - (distanceToPlayer / 125.0), 0);
+    float fadeFactor = max(1.0 - (distanceToPlayer / 200.0), 0);
     vec3 highlight = material.highlight * highlightMask * fadeFactor;
 
     // Fresnel

@@ -35,7 +35,6 @@ void main()
     float amplitude = initialAmplitude;
     float frequency = initialFrequency;
     float speed = initialSpeed;
-    float amplitudeSum = 0.0;
 
     //calculate y and derivatives for normals
     float y = 0.0;
