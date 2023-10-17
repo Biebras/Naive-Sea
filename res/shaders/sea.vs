@@ -44,6 +44,7 @@ void main()
     float lastDx = 0.0;
     float lastDz = 0.0;
 
+
     for(int i = 0; i < numWaves; i++)
     {
         vec2 dir = GetRandomDirection(i);
