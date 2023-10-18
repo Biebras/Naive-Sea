@@ -2,6 +2,7 @@
 https://github.com/Biebras/Naive-Sea/assets/49594342/709046a7-f330-44f2-8874-d5a715be0f92
 ## How to run
 ```
+git clone --recurse-submodules https://github.com/Biebras/Naive-Sea.git
 cd ./build/
 cmake ..
 make
