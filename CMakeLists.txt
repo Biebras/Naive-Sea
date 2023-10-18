@@ -11,21 +11,17 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(include)
 # Include imgui headers
 include_directories(vendor/include/imgui)
-# Include imGuizmo headers
-include_directories(vendor/include/imGuizmo)
-
 # Include header files located in the 'vendor/include' directory
 include_directories(vendor/include)
-
 # Link the 'lib' directory
 link_directories(vendor/lib)
+# Add GLFW as a subdirectory so its CMakeLists.txt file gets invoked
+add_subdirectory("${PROJECT_SOURCE_DIR}/vendor/submodules/glfw")
 
 # Add an executables to be built from the source files listed in the command invocation.
 file(GLOB_RECURSE SOURCES "src/*.cpp" "vendor/src/**/*.c" "vendor/src/**/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Locate the GLFW library on your system
-find_package(glfw3 3.3 REQUIRED)
 # Locate the Assimp library on your system
 find_library(ASSIMP_LIBRARY NAMES assimp libassimp PATHS "${PROJECT_SOURCE_DIR}/vendor/lib/assimp")
 
